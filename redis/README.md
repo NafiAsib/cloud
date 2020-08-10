@@ -1,23 +1,40 @@
 # **Redis Cheatsheet**
 
-### **Installation**
+### **Installation on Linux**
 ---
+* Using `apt` package manger
+
 Update repository: `sudo apt update`
 
 Install redis-server: `sudo apt install redis-server`
 
+* Download and `make`
+```
+wget http://download.redis.io/releases/redis-5.0.7.tar.gz
+tar xzf redis-5.0.7.tar.gz
+cd redis-5.0.7
+make
+```
+
 ### **Start**
 ---
+* If installed using package manager
+
 To start Redis server: `sudo service redis-server start`
 
 Open redis-cli: `redis-cli`
+* If downloaded and `make`
+
+To start Redis server: `./redis-5.0.7/src/redis-server`
+
+Open redis-cli: `./redis-5.0.7/src/redis-cli`
 
 Type: `PING`, this should return a reply of `PONG`
 
 To check whether Redis is able to persist data even after it’s been stopped or restarted. First
 set a key: `SET test "ABCD"`, then exit redis-cli: `EXIT` 
 
-Now, Stop redis-server and start it again. Open redis-clie, get key value: `GET tests`
+Now, Stop redis-server and start it again. Open redis-cli, get key value: `GET test`
 
 This should return `"ABCD"`
 
@@ -127,3 +144,94 @@ Redis `EXPIRE` set a timeout for a key:
     * `SADD set-name element1, element2`
     * `SMEMBERS set-name`
     * `SISMEMBER myset 3` returns 1 if 3 exist in the set
+
+
+### **Redis Cluster**
+---
+Redis cluster provides a way for automatically [data shardding](https://en.wikipedia.org/wiki/Shard_(database_architecture)) across multiple Redis nodes. In Redis cluster, every key is coneceptually part of what is called an hash slot.
+
+*There are 16384 hash slots in Redis Cluster.*
+Every node in a Redis Cluster is responsible for a subset of these hash slots. 
+
+For example, if we have 3 nodes (A, B, C), then:
+
+Node A contains hash slots from 0 to 5500.
+Node B contains hash slots from 5501 to 11000.
+Node C contains hash slots from 11001 to 16383.
+
+If we add a new Node D, some hash slot will move from A, B, C to D. Similarly, if we want to remove A, slots served by A will move to B and C.
+
+***Master-slave model***
+
+Suppose, our node A fails to connect to majority of nodes, then what should happen? Here comes the master-slave model. 
+
+Every master node will have replicas which are called slave. If a master fails, then among the slave, one node will be elected as master. If the previos master comes back, it'll act as a slave. Data write request goes to master node.
+*If master and slave fails at the same time, redis cluster will not be able to continue to opearate*
+
+***Redis Cluster is not able to guarantee strong consistency***
+
+Suppose, master node A gets write request. It writes the data and send OK to client. Then A propagates the write to its slave. But, if A crashes before sending the data to slaves, the data will be lost. One of its slave will be act as master without the data.
+
+**Cluster configuration parameters**
+
+Redis cluster introduces cluster configuration parameters in `redis.conf` file.
+* **cluster-enabled** <yes/no>: If yes, enables Redis Cluster support in a specific Redis instance. Otherwise the instance starts as a stand alone instance as usual.
+* **cluster-config-file** <filename>: This is not a user editable configuration file. Basically, this is the file where a cluster node persists it's state so that, it can re-read from the file when needed.
+* **cluster-node-timeout** <milliseconds>: The maximum amount of time a Redis Cluster node can be unavailable before a slave node takesover.
+
+Enable clustering in redis.conf file:
+```
+    cluster-enabled yes 
+    cluster-config0file nodes-6379.conf 
+    cluster-node-timeout 15000
+```
+
+To create a cluster we need a few empty Redis instances running in cluster mode. As a special mode needs to be configured, so that the Redis instance will enable the Cluster specific features and commands.
+
+Following is a minimal Redis cluster configuration:
+```
+    port 7000
+    cluster-enabled yes
+    cluster-config-file node.conf
+    cluster-node-timeout 5000
+    appendonly yes
+```
+`cluster-enabled` directive enables the cluster. Every instance will have a `nodes.conf` file that stores the configuration for that node. It is automatically generated at startup. We don't need to touch it.
+
+*Note that the minimal cluster that works as expected requires to contain at least three master nodes. For our test we'll start a six nodes cluster with three masters and three slaves.*
+
+Let's have the following the configuration for our nodes:
+```
+    port 7000
+    cluster-enabled yes
+    cluster-config-file node-0.conf
+    cluster-node-timeout 5000
+    appendonly yes
+    appendfilename node-0.aof
+    dbfilename dump-0.rdb
+```
+Create 6 files `7000.conf` `7001.conf` `7002.conf` `7003.conf` `7004.conf` `7005.conf` and paste the configuration. Make sure to change the port number, .conf filename, .aof filename and .rdb filename according to the port.
+
+*You can type `touch 700{0..5}.conf` in terminal to create 6 files.*
+
+Now, we need to start 6 server with their `.conf` files. 
+
+*Depending on your installation it may vary how you start a server.*
+
+If you used a package manager to install redis-server, then: `redis-server 7000.conf`
+
+If you downloaded redis and did `make` then : `/path-of-redis-server/redis-5.0.7/src/redis-server 7000.conf`
+
+Finally, the time has come to create the cluster. 
+```
+    /redis-5.0.7/src/redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 --cluster-replicas 1
+```
+*If you're on Redis < 5*
+```
+    ./redis-trib.rb create --replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005
+```
+We used `create` command. `--cluster-replicas 1` means we want a slave for every master created.
+
+`redis-cli` will propose a configuration, type yes to accept.
+
+voilà! 👏 We have our cluster with 3 master and 3 slave nodes.
