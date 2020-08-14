@@ -170,6 +170,12 @@ Lets say we want to find find the first_name of every person in our table.
 ```
 *`SELECT *` means select everythig.*
 
+##### ***Alias***
+If we want to use alias for any column name in query result, we can use `AS` keyword.
+```sql
+    SELECT country_of_birth AS Country FROM person;
+```
+
 ##### ***WHERE & AND***
 In order to use a condition in data query, WHERE is used.
 
@@ -177,6 +183,7 @@ Let's say we want to find the record of every person whose country_of_birth is '
 ```sql
     SELECT * FROM person WHERE country_of_birth = 'France';
 ```
+
 ##### ***ORDER BY***
 ```sql
     SELECT col_name FROM table_name ORDER BY col_name;
@@ -189,7 +196,7 @@ By default ORDER BY will sort in ascending order. `DESC` is used for descending 
 
 We can use multiple column for sorting but it's preferred to use only one column.
 
-#### ***DISTINCT***
+##### ***DISTINCT***
 ```sql
     SELECT DISTINCT column_name FROM table_name;
 ```
