@@ -71,7 +71,7 @@ You can type `\l` to get the list of the databases.
 ### **Create, Connect & Change Database**
 ---
 To create a database,
-```
+```sql
     CREATE DATABASE db-name;
 ```
 Now, in order to conncet to the database there are two ways.
@@ -89,7 +89,7 @@ Second one is, if you are already in psql, simply type `\c database-name`.
 ### **Create Tables**
 ---
 Syntax for creating table is,
-```
+```sql
     CREATE TABLE table_name (
         Column name + data type + constraints if any
     );
@@ -99,7 +99,7 @@ PostgreSQL supports various [data types](https://www.postgresql.org/docs/12/data
 Tables can be created with or without [constraints](https://www.tutorialspoint.com/sql/sql-constraints.htm).
 
 *Example of creating table Without contraints,*
-```
+```sql
     CREATE TABLE person ( 
         id BIGSERIAL, 
         first_name VARCHAR(50) , 
@@ -109,7 +109,7 @@ Tables can be created with or without [constraints](https://www.tutorialspoint.c
         email VARCHAR(150) );
 ```
 *Example of creating table With constraints,*
-```
+```sql
     CREATE TABLE person ( 
         id BIGSERIAL NOT NULL PRIMARY KEY, 
         first_name VARCHAR(50) NOT NULL, 
@@ -128,7 +128,7 @@ Tables can be created with or without [constraints](https://www.tutorialspoint.c
 ### **Insert**
 ---
 Syntax for inserting data into table is,
-```
+```sql
     INSERT INTO table_name (
         col_name1,
         col_name2,
@@ -136,7 +136,7 @@ Syntax for inserting data into table is,
     VALUES ('value_of_col_name1', 'value_of_col_name2);
 ```
 *Example of data insertion in previously created table,*
-```
+```sql
     INSERT INTO person (first_name, last_name, gender, date_of_birth)
     VALUES ('John', 'Doe', 'male', date '1988-01-09');
 ```
@@ -161,19 +161,19 @@ Change the table creation code with our previously written code and import it.
 ```
 ### **Query**
 ---
-```
+```sql
     SELECT col_name FROM table_name;
 ```
 Lets say we want to find find the first_name of every person in our table.
-```
+```sql
     SELECT first_name FROM person;
 ```
 *`SELECT *` means select everythig.*
 
 ##### ***WHERE & AND***
-In order to use a condition in data query WHERE is used.
+In order to use a condition in data query, WHERE is used.
 
 Let's say we want to find the record of every person whose country_of_birth is 'France'.
-```
+```sql
     SELECT * FROM person WHERE country_of_birth = 'France';
 ```
