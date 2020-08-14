@@ -179,13 +179,23 @@ Let's say we want to find the record of every person whose country_of_birth is '
 ```
 ##### ***ORDER BY***
 ```sql
-    SELECT col_name FROM table_name ORDER BY col_name 
+    SELECT col_name FROM table_name ORDER BY col_name;
 ```
 Let's say we want every person in our table sorted by their country name in ascending order.
 ```sql
-    SELECT * FROM person ORDER BY country_of_birth ASC
+    SELECT * FROM person ORDER BY country_of_birth ASC;
 ```
 By default ORDER BY will sort in ascending order. `DESC` is used for descending order sorting. NULL value goes last in ascending order.
 
 We can use multiple column for sorting but it's preferred to use only one column.
 
+#### ***DISTINCT***
+```sql
+    SELECT DISTINCT column_name FROM table_name;
+```
+Only the distinct value will be shown.
+
+Let's say we want to find which country's are in our table.
+```sql
+    SELECT DISTINCT country_of_birth FROM person;
+```
