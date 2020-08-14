@@ -3,19 +3,19 @@
 ## **Contents**
 ---
 * [Installation on Linux](#installation-on-linux)
-* [Create, Connect & Change Database](#Create,-Connect-&-Change-Database)
-* [Create table](#Create-table)
+* [Create, Connect & Change Database](#create-connect---change-database)
+* [Create table](#create-table)
 * [Insert](#insert)
-* [Import .sql file](#import-.sql-file)
+* [Import .sql file](#import-sql-file)
 * [Generating dummy data using Mockaroo](#generating-dummy-data-using-mockaroo)
 * [Query](#query)
-    * [WHERE & AND](#where-&-and)
+    * [WHERE & AND](#where---and)
     * [ORDER BY](#order-by)
     * [DISTINCT](#distinct)
     * [Comparison Operators](#comparison-operators)
     * [IN](#in)
     * [BETWEEN](#between)
-    * [LIKE & ILIKE](#like-&-ilike)
+    * [LIKE & ILIKE](#like---ilike)
     * [GROUP BY](#group-by)
     * [GROUP BY HAVING](#group-by-having)
     * [Aggregate Functions](#aggregate-functions)
@@ -34,12 +34,12 @@
     * [LEFT JOIN](#left-join)
 * [EXTENSIONS](#extensions)
 * [UUID](#uuid)
-* [Serial & Sequences](#serial-&-sequences)
+* [Serial & Sequences](#serial---sequences)
 * [Timestamps & Dates](#timestamps-&-dates)
 * [Age Function](#age-functions)
 * [COALESCE](#coalesce)
 * [NULLIF](#nullif)
-* [Exporting Query Results to CSV](#exporting-query-results-to-cSV)
+* [Exporting Query Results to CSV](#exporting-query-results-to-csv)
 
 
 ### ***Installation on Linux***
@@ -206,3 +206,7 @@ Let's say we want to find which country's are in our table.
 ```sql
     SELECT DISTINCT country_of_birth FROM person;
 ```
+
+##### ***Comparison Operator***
+We can use comparison operators in our query. `>` (greater than), `<` (less than), `>=` (greater than or equal), `<=` (less than or equal), `=` (equal to), `<>` (not equal).
+
