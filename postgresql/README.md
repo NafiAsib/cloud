@@ -3,13 +3,13 @@
 ## **Contents**
 ---
 * [Installation on Linux](#installation-on-linux)
-* [Create, Connect & Change Database](#create-connect---change-database)
-* [Create table](#create-table)
+* [Create, Connect & Change Database](#create-connect--change-database)
+* [Create table](#create-tables)
 * [Insert](#insert)
 * [Import .sql file](#import-sql-file)
 * [Generating dummy data using Mockaroo](#generating-dummy-data-using-mockaroo)
 * [Query](#query)
-    * [WHERE & AND](#where---and)
+    * [WHERE & AND](#where--and)
     * [ORDER BY](#order-by)
     * [DISTINCT](#distinct)
     * [Comparison Operators](#comparison-operators)
