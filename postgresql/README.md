@@ -98,7 +98,7 @@ PostgreSQL supports various [data types](https://www.postgresql.org/docs/12/data
 
 Tables can be created with or without [constraints](https://www.tutorialspoint.com/sql/sql-constraints.htm).
 
-*Example of creating table Without contraints,*
+*Example of creating table Without constraints,*
 ```sql
     CREATE TABLE person ( 
         id BIGSERIAL, 
