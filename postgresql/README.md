@@ -56,7 +56,7 @@ For database status, start & stop,
 ```
 Change the password before using for the first time, type `sudo passwd postgres` & you'll be prompt to insert a password.
 
-Now, start the database server by typing `sudo service postresql start` and connect to the server typing `sudo -u posgres psql`.
+Now, start the database server by typing `sudo service postresql start` and connect to the server typing `sudo -u postgres psql`.
 
 Here 'postgres' is the username, which is the default username of PostgreSQL.
 
